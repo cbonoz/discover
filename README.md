@@ -17,7 +17,7 @@ Usages of the api's are
 
 Designed for consumers of the discover blockchain.
 
-##Benefits:
+## Benefits:
 * Automatically create an immutable ledger of api calls and history that cannot be modified by any third party - while simultaneously being completely transparent and indexable.
 * Audit trail of responses - if you need to revisit a response
 

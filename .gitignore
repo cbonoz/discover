@@ -8,6 +8,7 @@ Token.sol
 # IDE files
 .idea
 .idea/
+.idea/*
 
 # Built application files
 *.apk
