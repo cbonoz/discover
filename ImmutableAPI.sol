@@ -94,12 +94,14 @@ contract Pausable is Ownable {
  */
 contract ImmutableAPI is Ownable, Pausable {
 
+    // Public variables of the token
     string public name;
+    string public symbol;
 
     event RecordTransaction(string api, string data, uint256 timestamp);
 
-    function ImmutableAPI() public {
-        name = "ImmutableAPI";
+    function ImmutableAPI(string contractName) public {
+        name = contractName;
     }
 
     function recordAPI(string api, string data, uint256 timestamp) whenNotPaused public returns (bool) {

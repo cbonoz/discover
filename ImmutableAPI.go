@@ -14,7 +14,7 @@ import (
 )
 
 // ImmutableAPIABI is the input ABI used to generate the binding from.
-const ImmutableAPIABI = "[{\"constant\":false,\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"api\",\"type\":\"string\"},{\"name\":\"data\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"recordAPI\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"api\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"data\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"RecordTransaction\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"Pause\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"Unpause\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+const ImmutableAPIABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"api\",\"type\":\"string\"},{\"name\":\"data\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"recordAPI\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"contractName\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"api\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"data\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"RecordTransaction\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"Pause\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"Unpause\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // ImmutableAPI is an auto generated Go binding around an Ethereum contract.
 type ImmutableAPI struct {
@@ -143,6 +143,32 @@ func (_ImmutableAPI *ImmutableAPITransactorRaw) Transact(opts *bind.TransactOpts
 	return _ImmutableAPI.Contract.contract.Transact(opts, method, params...)
 }
 
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(string)
+func (_ImmutableAPI *ImmutableAPICaller) Name(opts *bind.CallOpts) (string, error) {
+	var (
+		ret0 = new(string)
+	)
+	out := ret0
+	err := _ImmutableAPI.contract.Call(opts, out, "name")
+	return *ret0, err
+}
+
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(string)
+func (_ImmutableAPI *ImmutableAPISession) Name() (string, error) {
+	return _ImmutableAPI.Contract.Name(&_ImmutableAPI.CallOpts)
+}
+
+// Name is a free data retrieval call binding the contract method 0x06fdde03.
+//
+// Solidity: function name() constant returns(string)
+func (_ImmutableAPI *ImmutableAPICallerSession) Name() (string, error) {
+	return _ImmutableAPI.Contract.Name(&_ImmutableAPI.CallOpts)
+}
+
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() constant returns(address)
@@ -193,6 +219,32 @@ func (_ImmutableAPI *ImmutableAPISession) Paused() (bool, error) {
 // Solidity: function paused() constant returns(bool)
 func (_ImmutableAPI *ImmutableAPICallerSession) Paused() (bool, error) {
 	return _ImmutableAPI.Contract.Paused(&_ImmutableAPI.CallOpts)
+}
+
+// Symbol is a free data retrieval call binding the contract method 0x95d89b41.
+//
+// Solidity: function symbol() constant returns(string)
+func (_ImmutableAPI *ImmutableAPICaller) Symbol(opts *bind.CallOpts) (string, error) {
+	var (
+		ret0 = new(string)
+	)
+	out := ret0
+	err := _ImmutableAPI.contract.Call(opts, out, "symbol")
+	return *ret0, err
+}
+
+// Symbol is a free data retrieval call binding the contract method 0x95d89b41.
+//
+// Solidity: function symbol() constant returns(string)
+func (_ImmutableAPI *ImmutableAPISession) Symbol() (string, error) {
+	return _ImmutableAPI.Contract.Symbol(&_ImmutableAPI.CallOpts)
+}
+
+// Symbol is a free data retrieval call binding the contract method 0x95d89b41.
+//
+// Solidity: function symbol() constant returns(string)
+func (_ImmutableAPI *ImmutableAPICallerSession) Symbol() (string, error) {
+	return _ImmutableAPI.Contract.Symbol(&_ImmutableAPI.CallOpts)
 }
 
 // Pause is a paid mutator transaction binding the contract method 0x8456cb59.

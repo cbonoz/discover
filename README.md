@@ -31,3 +31,11 @@ Designed for consumers of the discover blockchain.
 * abigen --abi ImmutableAPI.abi --pkg main --type ImmutableAPI --out ImmutableAPI.go
 * abigen --abi token.abi --pkg main --type Token --out token.go
 
+
+<!--
+### Useful links
+* https://ethereum.stackexchange.com/questions/6650/how-to-get-ether-on-public-testnet
+* https://medium.com/taipei-ethereum-meetup/deploy-solidity-code-on-ropsten-test-net-a93ceb16dc4e
+* https://ethereum.stackexchange.com/questions/11495/best-way-to-test-a-smart-contract
+-->
+

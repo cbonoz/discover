@@ -9,12 +9,18 @@ import (
 	"github.com/op/go-logging"
 	"net/http"
 	"strconv"
+	"strings"
+	"net/url"
+	"io/ioutil"
+	"bytes"
 )
 
 var DISCOVER_KEY string = os.Getenv("discoverkey")
+var DISCOVER_SECRET string = os.Getenv("discoversecret")
+
 var log = logging.MustGetLogger("immutable")
 
-const AUTH_API = "https://apis.discover.com/auth/oauth/v2/token"
+//const AUTH_API = "https://apis.discover.com/auth/oauth/v2/token"
 
 var immutableContract ImmutableAPI
 var authToken string
@@ -49,9 +55,27 @@ func configureLogging() {
 	log.Debugf("configured logging successfully")
 }
 
-func getAuthToken() string {
 
-	return "token"
+func makePostRequest(postUrl string, reqBody string) (string, error) {
+	var jsonStr = []byte(reqBody)
+	req, err := http.NewRequest("POST", postUrl, bytes.NewBuffer(jsonStr))
+	req.Header.Set("X-Custom-Header", "myvalue")
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+	fmt.Println("response Headers:", resp.Header)
+
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
+
+	return body, err
 }
 
 func saveResultsToLedger() {
@@ -75,9 +99,14 @@ func setupImmutableApi() {
 }
 
 func main() {
+	configureLogging()
 	log.Debugf("Discover key: %s", DISCOVER_KEY)
 
-	authToken = getAuthToken()
+	reqBody := `{"title":"Buy cheese and bread for breakfast."}`
+	authToken, err := makePostRequest(getAuthApi(), reqBody)
+	if (err != nil) {
+		log.Fatalf("Error getting auth token %s", err)
+	}
 	log.Debugf("Retrieved token: %s", authToken)
 
 	setupImmutableApi()
@@ -85,9 +114,10 @@ func main() {
 	//realMain()
 }
 
+
+/* to add later */
 func realMain() {
 	var err error
-	configureLogging()
 	log.Debugf("Discover key: %s", DISCOVER_KEY)
 
 	// first argument is the executed program name
