@@ -1,3 +1,14 @@
+# custom
+apishowdown
+notes
+notes*
+notes.txt
+Token.sol
+
+# IDE files
+.idea
+.idea/
+
 # Built application files
 *.apk
 *.ap_
