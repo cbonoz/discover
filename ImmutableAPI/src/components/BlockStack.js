@@ -47,7 +47,7 @@ export default class BlockStack extends Component {
     const self = this;
 
     // const blockHtml = self.props.blockHtml;
-    console.log('blocks: ', self.props.blocks);
+    // console.log('blocks: ', self.props.blocks);
 
     const blockHtml = self.props.blocks.map((item, index) =>
         (<div

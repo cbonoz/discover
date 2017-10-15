@@ -112,13 +112,14 @@ class App extends Component {
       .then(res => res.json())
       .then(json => {
         const hashedPath = self.hashData(path);
-        const hashedResponse = self.hashData(json.toString());
-        console.log('response', json, 'hash', hashedResponse);
+        const response = JSON.stringify(json);
+        const hashedResponse = self.hashData(JSON.stringify(response));
+        // console.log('response', response, 'hash', hashedResponse);
 
         self.state.web3.eth.getAccounts((error, accounts) => {
           self.state.immutableApi.deployed().then((instance) => {
             self.setState({immutableApiInstance: instance});
-            self.recordTransaction(hashedPath, hashedResponse, accounts[0]);
+            self.recordTransaction(path.slice(0, Math.min(40, path.length)) + "...", hashedResponse, accounts[0]);
           })
         });
       }).catch((err) => {
@@ -168,7 +169,7 @@ class App extends Component {
             <div className="pure-u-1-1">
               {/* <h1>A self-auditing API system</h1> */}
 
-              <h1>Recent Transaction API Calls</h1>
+              <h1>Recent Merchant API Calls</h1>
               <p>Blocks:&nbsp;
               {self.state.blocks.length}
               </p>

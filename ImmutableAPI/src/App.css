@@ -578,6 +578,7 @@ code {
 .navbar .pure-menu-heading {
   font-weight: bold;
   text-transform: none;
+  background: #233e5e;
 }
 
 .navbar .navbar-right {
