@@ -5,6 +5,9 @@ notes*
 notes.txt
 Token.sol
 
+ImmutableAPI/build
+ImmutableAPI/node_modules
+
 # IDE files
 .idea
 .idea/

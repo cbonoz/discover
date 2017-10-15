@@ -14,7 +14,7 @@ const SimpleStorage = require('./contracts/SimpleStorage.json');
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
 
-const INTERVAL = 1;
+const INTERVAL = 5;
 const PORT = 8007;
 
 app.get('/', function (req, res) {
@@ -32,6 +32,12 @@ function applyCompat(contract) {
         };
     }
 }
+
+function getTimeMs() {
+    const d = new Date();
+    return d.getTime();
+}
+
 const simpleStorage = contract(SimpleStorage)
 simpleStorage.setProvider(web3.currentProvider)
 
@@ -43,38 +49,56 @@ applyCompat(simpleStorage);
 
 // Declaring this for later so we can chain functions on SimpleStorage.
 var simpleStorageInstance;
+var immutableApiInstance;
+
+function recordTransaction(event, data, account) {
+    immutableApiInstance.recordAPI(event, data, getTimeMs(), { from: account })
+        .then((result) => {
+            console.log('recordAPI: ' + JSON.stringify(result));
+        }).catch((err) => {
+            console.log('error recording api: ' + err);
+    });
+}
 
 // Get accounts.
 web3.eth.getAccounts((error, accounts) => {
-    console.log('accounts: ' + accounts);
-  simpleStorage.deployed().then((instance) => {
-    simpleStorageInstance = instance
+    immutableApi.deployed().then((instance) => {
+        immutableApiInstance = instance;
 
-    // Stores a given value, 5 by default.
-    return simpleStorageInstance.set(5, {from: accounts[0]})
-  }).then((result) => {
-    console.log('result: ' + JSON.stringify(result));
-    // Get the value from the contract to prove it worked.
-    return simpleStorageInstance.get.call(accounts[0])
-  }).catch(err => console.log(err)).then((result) => {
-    // Update state with the result.
-    console.log('result: ' + result);
-    return this.setState({ storageValue: result.c[0] })
-  })
+        // Get the web3 context before starting the server.
+        app.listen(PORT, function () {
+            recordTransaction("test api", "test data", accounts[0]);
+            console.log(`App listening on port ${PORT}!`)
+            var rule = new schedule.RecurrenceRule();
+            rule.minute = new schedule.Range(0, 59, INTERVAL);
+            
+            scheduledJob = schedule.scheduleJob(rule, function(){
+                console.log('Running scheduled job');
+                recordTransaction("test api", "test data", accounts[0]);
+                // Fetch data from the target api.
+                // fetch()
+                
+            });
+            console.log(rule, `set rule to run scheduled job every ${INTERVAL} minutes`);
+        });
+    });
 })
 
-// Get the web3 context before starting the server.
-app.listen(PORT, function () {
-    console.log(`App listening on port ${PORT}!`)
-    var rule = new schedule.RecurrenceRule();
-    rule.minute = new schedule.Range(0, 59, INTERVAL);
-    
-    scheduledJob = schedule.scheduleJob(rule, function(){
-        console.log('Running scheduled job');
-        // Fetch data from the target api.
-    });
-    console.log(rule, `set rule to run scheduled job every ${INTERVAL} minutes`);
-});
+// Set the configuration settings
+const credentials = {
+    client: {
+        id: '<client-id>',
+        secret: '<client-secret>'
+    },
+    auth: {
+        tokenHost: 'https://api.oauth.com'
+    }
+};
+
+
+// Initialize the OAuth2 Library
+// const oauth2 = require('simple-oauth2').create(credentials);
+
 // .catch(err => {
 //     console.log('error getting web3: ' + err);
 // })
