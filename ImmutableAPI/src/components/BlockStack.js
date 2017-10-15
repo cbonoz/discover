@@ -4,6 +4,9 @@
 import React, { Component } from 'react';
 import StackGrid, { transitions, easings } from 'react-stack-grid';
 
+import checkImage from './static/checkImage.png';
+import cancelImage from './static/cancelImage.png';
+
 const itemModifier = [
   'gray'
 ];
@@ -24,9 +27,9 @@ export default class BlockStack extends Component {
 
   getTransactionImage(index) {
     if (index != 0 && index % 10 == 0) {
-      return "http://www.iconsdb.com/icons/preview/red/x-mark-3-xxl.png";
+      return cancelImage;
     }
-    return "http://www.iconsdb.com/icons/preview/green/ok-xxl.png";
+    return checkImage;
   }
 
   removeItem(txHash) {

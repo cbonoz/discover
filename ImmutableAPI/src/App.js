@@ -26,7 +26,8 @@ class App extends Component {
       lastBlockTime: null,
       rand: null,
       callInterval: 4000,
-      companiesToValidate: ['target', 'sears', 'jcpenney', 'walmart', 'costco']
+      companiesToValidate: ['target', 'sears', 'jcpenney', 'walmart', 'costco'],
+      proxyurl: "https://cors-anywhere.herokuapp.com/"
     }
   }
 
@@ -96,17 +97,45 @@ class App extends Component {
     return crypto.createHash('md5').update(data).digest("hex");
   }
 
-  apiRequest() {
+  apiRequestElligiblity() {
+    const self = this;
+    var request = require('request');
+    const url = "https://api.discover.com";
+    const path = '/nws/nwp/hce/v2/account/eligibility';
+    const fullUrl = self.state.proxyurl + url + path;
+    request({
+        url: fullUrl,
+        body: '{"requestHeader": {"requestId": "fbc6768759554d0d9ca8acd918c6ddb9","sessionId": "0bf3876b13144007b11347f6b08dbaaa","programId": "8010","userContext": {"walletId": "a576857","deviceId": "a5672583a","userId": "asgdhjagyuagsdyug"}},"accountEligibilityRequest": {"secureContext": {"encryptedContent": "eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoiQ3Q2ck9aLXJkSEtkSFM1Ylg1Q3dUYW9rU2w1d0dfcXh2VHdwQ1dQYWhXQSJ9.DVwDsZElPwgCNDWRsodgAqDYqHmJY5rHSaGHacwvR5P8p2xJW9ARgx36-lELyiAXkNDrZk4eDsdjkZdLRrAeH5gIyscGIycYLcOwCMiRULOL_sO2_gzwLNTd9abMxCeng6CsirGe9_B92lfsru3Di10wsGHXAxsgBQv6C6n6MNoCBBXBpCbvcMuQwHnqpgJRxxF9pdtYkyl9_Q995GO4ZL2dnpoWJwRHcQT19WXBPifySUZLSvSS-v6HfnebSAd592GlLsKrJjIO3zePhJ_plnvYMPQHyxFYLBPXKV2M9A337Ul6kX7a-MUEZMhE-rlDs9OKFMfZ53lwdaKzIrEkzg.4C4OL72s_f1mLs7fpCnGZw.T2DJYDMEO5AUg6GQBw6XB7llhRjqiFCIGBa9DFAoApHrdPFmLA6inNOky5vZysjjzgQ6Itls-3dxJodIZm34bR95S4SdDTUm3wnokR1DmhZtBxetTkjqVSZF1VTwmX6VqdHzaHH6bjqC-9OjkLaMmrmBOmbwYVCOpWg3IaBmUK2WtXdB7SxNFfaWwXzwcJtlDwRmbjdJoctIVAXB9iqUd0uI3N_dokS-5dJqpfwfVp2zEKLFiqGzCCIWn9DxXrzG.FW1tk1vdirPZlKl0gP_dKA"},"deviceContext": {"deviceLanguage": "en-US","deviceType": "1"}}}',
+        headers: { 'x-dfs-c-app-cert':'dfsexxkJG4R0l4XUcdO0qN1uQxTNDNzdbNyG9L4XYJAh5P2pk', 'Accept':'application/json', 'Content-Type':'application/json', 'Cache-Control':'no-store', 'x-dfs-api-plan':'NWS-HCE-Sandbox', 'Authorization':'Bearer aee60db8-0ab3-47ab-aac1-65020107b1ee', 'Content-Type':'application/json'  },
+        method: 'POST'
+    }, function (error, resp, body) {
+        // console.log('Status', resp.statusCode);
+        // console.log('Headers', JSON.stringify(response.headers));
+        // console.log('Reponse received', body);
+
+        const hashedPath = self.hashData(path);
+        const response = JSON.stringify(body);
+        const hashedResponse = self.hashData(JSON.stringify(response));
+
+        self.state.web3.eth.getAccounts((error, accounts) => {
+          self.state.immutableApi.deployed().then((instance) => {
+            self.setState({immutableApiInstance: instance});
+            self.recordTransaction(path.slice(0, Math.min(40, path.length)) + "...", hashedResponse, accounts[0]);
+          })
+        });
+    });
+  }
+
+  apiRequestMerchant() {
     const self = this;
     // Insert fetch call to discover api here.
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
     // Validate the request/response of details for a 'random' company.
     const company = self.getRandom(self.state.companiesToValidate);
     const queryParams = '?' +  encodeURIComponent('requestHeader.version') + '=' + encodeURIComponent('3.2')+ '&' +  encodeURIComponent('requestHeader.format') + '=' + encodeURIComponent('json')+ '&' +  encodeURIComponent('requestHeader.applicationKey') + '=' + encodeURIComponent('l7xx7741684d36644a3fb8b25e1998792176')+ '&' +  encodeURIComponent('listControl.startIndex') + '=' + encodeURIComponent('0')+ '&' +  encodeURIComponent('listControl.segmentSize') + '=' + encodeURIComponent('10')+ '&' +  encodeURIComponent('listControl.segmentWindow') + '=' + encodeURIComponent('3')+ '&' +  encodeURIComponent('searchCriteria.filterField') + '=' + encodeURIComponent('name')+ '&' +  encodeURIComponent('searchCriteria.filterValue') + '=' + encodeURIComponent(company)+ '&' +  encodeURIComponent('apikey') + '=' + encodeURIComponent('l7xx7741684d36644a3fb8b25e1998792176');
     const baseUrl = 'https://api.discover.com';
     const path = '/geo/remote/rest/location' + queryParams;
     const url = baseUrl + path;
-    const fullUrl = proxyurl + url;
+    const fullUrl = self.state.proxyurl + url;
 
     fetch(fullUrl)
       .then(res => res.json())
@@ -129,7 +158,7 @@ class App extends Component {
 
   randomizeApiRequest() {
     const self = this;
-    self.apiRequest()
+    self.apiRequestElligiblity()
     self.setState({lastBlockTime: self.state.rand});
     const rand = Math.round(Math.random()*(self.state.callInterval))+1000;
     // clear the existing interval and set the new one.
