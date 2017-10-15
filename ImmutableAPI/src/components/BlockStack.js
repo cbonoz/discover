@@ -29,6 +29,10 @@ export default class BlockStack extends Component {
     return "http://www.iconsdb.com/icons/preview/green/ok-xxl.png";
   }
 
+  removeItem(txHash) {
+    console.log('clicked: ' + txHash);
+  }
+
   render() {
     const {
       items,
@@ -50,7 +54,7 @@ export default class BlockStack extends Component {
           key={item['tx']}
           className={`item item--${item.modifier}`}
           style={{ height: item.height }}
-          onClick={() => this.removeItem(item.id)}
+          onClick={() => self.removeItem(item['tx'])}
         ><span className='transaction'>Transaction</span>
         <div className='blueBG'><strong>Transaction Hash:</strong> <span className='word-break'>{item['receipt']['transactionHash']}</span></div>
         <div className='blueBG'><strong>API call:</strong> <span className='word-break'>{item['logs'][0]['args']['api']}</span></div>
