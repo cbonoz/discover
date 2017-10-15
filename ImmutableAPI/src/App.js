@@ -97,6 +97,8 @@ class App extends Component {
     return crypto.createHash('md5').update(data).digest("hex");
   }
 
+  // Use elligibility or merchant for repeated api calls and block chain adds (used for demo).
+  // These would be removed in production.
   apiRequestElligiblity() {
     const self = this;
     var request = require('request');
@@ -158,7 +160,7 @@ class App extends Component {
 
   randomizeApiRequest() {
     const self = this;
-    self.apiRequestElligiblity()
+    self.apiRequestMerchant()
     self.setState({lastBlockTime: self.state.rand});
     const rand = Math.round(Math.random()*(self.state.callInterval))+1000;
     // clear the existing interval and set the new one.

@@ -11,7 +11,6 @@ const itemModifier = [
   'gray'
 ];
 
-
 export default class BlockStack extends Component {
   constructor(props) {
     super(props);
