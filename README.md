@@ -37,5 +37,9 @@ Designed for consumers of the discover blockchain.
 * https://ethereum.stackexchange.com/questions/6650/how-to-get-ether-on-public-testnet
 * https://medium.com/taipei-ethereum-meetup/deploy-solidity-code-on-ropsten-test-net-a93ceb16dc4e
 * https://ethereum.stackexchange.com/questions/11495/best-way-to-test-a-smart-contract
+* https://github.com/ethereum/go-ethereum/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts
+* https://ethereum.stackexchange.com/questions/23388/execute-function-on-ropsten-tesnet-thru-geth-adapt-truffle-console-testrpc-comm
 -->
 
+
+    <!-- // "web3": "^1.0.0-beta.23" -->

@@ -1,0 +1,34 @@
+{
+  "name": "server-node",
+  "version": "1.0.0",
+  "description": "Nodejs server for monitoring live contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cp ../ImmutableAPI/build/contracts/*.json ./contracts/ && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbonoz/discover.git"
+  },
+  "keywords": [
+    "nodejs",
+    "server",
+    "contract",
+    "immutable",
+    "discover"
+  ],
+  "author": "Chris Buonocore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cbonoz/discover/issues"
+  },
+  "homepage": "https://github.com/cbonoz/discover#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "node-fetch": "^1.7.3",
+    "node-schedule": "^1.2.5",
+    "truffle-contract": "^3.0.0",
+    "web3": "^1.0.0-beta.23"
+  }
+}
