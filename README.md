@@ -9,21 +9,20 @@ Running an API query on transactional or historic data from 5 years ago should y
 
 Immutable API is an extension designed to securely encrypt and save responses of historic api calls onto an immutable and verified ledger. When calls come in (that have previously occurred in the past), their response hashes are checked for consistency. This can be done automatically and adds another dimension of trust for partners of the API that the results are secure and accurate.
 
-## Additional Background
+## Other Details 
 
 Many banks are currently implementing their own in-house api's designed to either facilitate banking transactions or expedite and improve accuracy in record auditing.
 
-Coming up with an interesting target market, instead of going after consumers or businesses that could use your API's, I decided to develop an extension specifically for Discovers' partners that want to make their API usage completely auditable.
+In practice, the implementation of Immutable API is actually quite simple. All that needs to be added is a method call (of the hashed query and response) onto the blockchain before the response is returned. These hashed requests "transactions" will later be used for crosschecking responses that are performed in the future.
 
-With Discover Immutable API interactions with the discover api are tied directly to the public block chain (specifically this is built on ethereum).
-
-In practice Immutable API will work as a middle man between the client and the server - intercepting web requests and adding them to the block chain for later consumption and validation.
-
-Usages of the api's are designed for consumers of the discover blockchain.
+Usages of the api's are designed for consumers (partners) using the discover API.
 
 ## Benefits:
 * Automatically create an immutable ledger of api calls and history that cannot be modified by any third party - while simultaneously being completely transparent and indexable.
-* Audit trail of responses - if you need to revisit a response
+* Auditable trail of responses - if you need to revisit a response
+* No additional cost - users and auditors of data returned from API's can very easily check the results of each api call in the live stream of hashed responses.
+* Stored on the blockchain. A distributed ledger offers both privacy and publicity at the same time.
+* Security. No user can bypass the checksum without overcoming/breaking the underlying network of nodes itself. 
 
 
 ### Dev Notes:
