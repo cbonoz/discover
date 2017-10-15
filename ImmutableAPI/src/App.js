@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 // import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import ImmutableAPI from '../build/contracts/ImmutableAPI.json'
 import getWeb3 from './utils/getWeb3'
-import ReactTimeout from 'react-timeout'
-import StackGrid from "react-stack-grid";
+import StackGrid, { transitions, easings } from 'react-stack-grid';
+import BlockStack from './components/BlockStack'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -21,7 +21,10 @@ class App extends Component {
       immutableApiInstance: null,
       blocks: [],
       web3: null,
-      myInterval: null 
+      myInterval: null ,
+      lastBlockTime: null,
+      rand: null,
+      callInterval: 4000
     }
   }
 
@@ -32,7 +35,7 @@ class App extends Component {
     getWeb3.then(results => {
       self.setState({
         web3: results.web3,
-        blocks: [{dafasdfasdf: 'asdfasfasdf'}]
+        blocks: []
       })
 
       // Instantiate contract once web3 provided.
@@ -70,9 +73,13 @@ class App extends Component {
     self.state.immutableApiInstance.recordAPI(
       event, data, self.getTimeMs(), { from: account })
         .then((result) => {
-            const res = JSON.stringify(result);
-            console.log('recordAPI: ' + res);
-            self.state.blocks.push(res)
+            // const res = JSON.stringify(result);
+            // console.log('recordAPI: ' + res);
+            const d = new Date(result['logs'][0]['args']['timestamp']['c'] * 1)
+            result['logs'][0]['args']['timestamp']['myDate'] = d.toDateString() + ' ' + d.toLocaleTimeString();
+            result['position'] = self.state.blocks.length;
+            self.setState({blocks: [result, ...self.state.blocks] })
+            console.log('blocks: ' + self.state.blocks.length);
         }).catch((err) => {
             console.log('error recording api: ' + err);
     });
@@ -88,6 +95,18 @@ class App extends Component {
     });
   }
 
+  randomizeApiRequest() {
+    const self = this;
+    self.apiRequest()
+    self.setState({lastBlockTime: self.state.rand});
+    const rand = Math.round(Math.random()*(self.state.callInterval))+1000;
+    // clear the existing interval and set the new one.
+    console.log('randomizeApiRequest: ' + rand);
+    clearInterval(self.state.myInterval);
+    self.setState({rand: rand, myInterval: 
+      setInterval(self.randomizeApiRequest.bind(self), rand)});
+}
+
   instantiateContract() {
     const self = this;
     const contract = require('truffle-contract')
@@ -95,15 +114,21 @@ class App extends Component {
     self.state.immutableApi.setProvider(this.state.web3.currentProvider);
     this.applyCompat(self.state.immutableApi);
 
-    this.setState({myInterval: setInterval(self.apiRequest.bind(self), 10000)});
+    const rand = 500;
+    this.setState({myInterval: setInterval(self.randomizeApiRequest.bind(self), rand)});
+    // this.setState({myInterval: setInterval(setInterval(, rand)))
   }
 
+  // {self.state.lastBlockTime != null && <span> (last {self.state.lastBlockTime}ms ago)</span>}
   render() {
     const self = this;
-    console.log(self.state.blocks)
+    const items = self.state.blocks;
+    const listItems = items.map((block, i) =>
+      <div key={i}>{block}</div>
+    );
     return (
       <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
+        <nav className="navbar ztop pure-menu pure-menu-horizontal">
             <a href="#" className="pure-menu-heading pure-menu-link">Discover Immutable API</a>
         </nav>
 
@@ -112,12 +137,13 @@ class App extends Component {
             <div className="pure-u-1-1">
               {/* <h1>A self-auditing API system</h1> */}
 
-              <StackGrid columnWidth={150}>
-               {self.state.blocks.map((block) => {
-                <div key="1">{block}</div>
-               })}
-              </StackGrid>
-            </div>
+              <h1>Recent Transaction API Calls</h1>
+              <p>Blocks:&nbsp;
+              {self.state.blocks.length}
+              </p>
+
+                <BlockStack blockHtml={listItems} blocks={items}/>
+              </div>
           </div>
         </main>
       </div>
