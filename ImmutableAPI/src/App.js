@@ -107,8 +107,8 @@ class App extends Component {
     const fullUrl = self.state.proxyurl + url + path;
     request({
         url: fullUrl,
-        body: '{"requestHeader": {"requestId": "fbc6768759554d0d9ca8acd918c6ddb9","sessionId": "0bf3876b13144007b11347f6b08dbaaa","programId": "8010","userContext": {"walletId": "a576857","deviceId": "a5672583a","userId": "asgdhjagyuagsdyug"}},"accountEligibilityRequest": {"secureContext": {"encryptedContent": "eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoiQ3Q2ck9aLXJkSEtkSFM1Ylg1Q3dUYW9rU2w1d0dfcXh2VHdwQ1dQYWhXQSJ9.DVwDsZElPwgCNDWRsodgAqDYqHmJY5rHSaGHacwvR5P8p2xJW9ARgx36-lELyiAXkNDrZk4eDsdjkZdLRrAeH5gIyscGIycYLcOwCMiRULOL_sO2_gzwLNTd9abMxCeng6CsirGe9_B92lfsru3Di10wsGHXAxsgBQv6C6n6MNoCBBXBpCbvcMuQwHnqpgJRxxF9pdtYkyl9_Q995GO4ZL2dnpoWJwRHcQT19WXBPifySUZLSvSS-v6HfnebSAd592GlLsKrJjIO3zePhJ_plnvYMPQHyxFYLBPXKV2M9A337Ul6kX7a-MUEZMhE-rlDs9OKFMfZ53lwdaKzIrEkzg.4C4OL72s_f1mLs7fpCnGZw.T2DJYDMEO5AUg6GQBw6XB7llhRjqiFCIGBa9DFAoApHrdPFmLA6inNOky5vZysjjzgQ6Itls-3dxJodIZm34bR95S4SdDTUm3wnokR1DmhZtBxetTkjqVSZF1VTwmX6VqdHzaHH6bjqC-9OjkLaMmrmBOmbwYVCOpWg3IaBmUK2WtXdB7SxNFfaWwXzwcJtlDwRmbjdJoctIVAXB9iqUd0uI3N_dokS-5dJqpfwfVp2zEKLFiqGzCCIWn9DxXrzG.FW1tk1vdirPZlKl0gP_dKA"},"deviceContext": {"deviceLanguage": "en-US","deviceType": "1"}}}',
-        headers: { 'x-dfs-c-app-cert':'dfsexxkJG4R0l4XUcdO0qN1uQxTNDNzdbNyG9L4XYJAh5P2pk', 'Accept':'application/json', 'Content-Type':'application/json', 'Cache-Control':'no-store', 'x-dfs-api-plan':'NWS-HCE-Sandbox', 'Authorization':'Bearer aee60db8-0ab3-47ab-aac1-65020107b1ee', 'Content-Type':'application/json'  },
+        body: '{"requestHeader": {"requestId": "fbc6768759554d0d9ca8acd918c6ddb9","sessionId": "0bf3876b13144007b11347f6b08dbaaa","programId": "8010","userContext": {"walletId": "a576857","deviceId": "a5672583a","userId": "asgdhjagyuagsdyug"}},"accountEligibilityRequest": {"secureContext": {"encryptedContent": "eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2Iiwia2lkIjoiQ3Q2ck9aLXJkSEtkSFM1Ylg1Q3dUYW9rU2w1d0dfcXh2VHdwQ1dQYWhXQSJ9.FGn1DTkKOumWL1hsBgv-A8-1moUnYjtw8kHKsB4O0vgOS-YSGezT37nGEqTcIkuiSZdAj0QWRc6E_m1vB_dR4wUg48n9HynBts_1frIDThEXIPkvS9-0cVqQVrRcbQpN7rmsGvGyKzIkkmkULnESfCDEQVByZb-6NrdgwWWf4kGo61XaFztr-zw_6SgS82ML8NK6qaug6hpV9Es1rIM1plB6iupoJZvhttAe9N4KZsJn3vQblp536luyZchZCh3NQzNpLJBQv3N3bDNGf6jHtTzjUeO2FiAIMU33jK0eGCUsOs-tI9_RzSyhvUB7tGwv42_ehEXa7gQm9F2KffRXsw.25oNawblvu2SbuUta9z0CA.vxqWPkXY5NqfJzZLI0YuOjlDIlFWa-3wPBdfo9-hYcBryNnmL5piy5QNT9ATe4-BWmHl8ivWV-xUl0qufhC1NDTSc5oyZ9TtFESzuun-7xLam6fWKU-TFV_MfZ2gWq9x5gKup2GdVpLwi444ttFG7lB_DU8tFHu58G4_SL4GMuXixl34BGiCLVYZmADjTbNCCBGoCe0zk9rbiZxgnveLn-3e9LHU9YJGUVj6SE1b_tlnAVqodYac4gfdbou4myWK.Hg0mSaWqHgWIFr0SmCCb8g"},"deviceContext": {"deviceLanguage": "en-US","deviceType": "1"}}}',
+        headers: { 'x-dfs-c-app-cert':'dfsexxkJG4R0l4XUcdO0qN1uQxTNDNzdbNyG9L4XYJAh5P2pk', 'Accept':'application/json', 'Content-Type':'application/json', 'Cache-Control':'no-store', 'x-dfs-api-plan':'NWS-HCE-Sandbox', 'Authorization':'Bearer c5197e1b-619a-4bae-b494-80bd0b9376eb' },
         method: 'POST'
     }, function (error, resp, body) {
         // console.log('Status', resp.statusCode);
@@ -160,7 +160,12 @@ class App extends Component {
 
   randomizeApiRequest() {
     const self = this;
-    self.apiRequestMerchant()
+    if (Math.random() > .5) {
+      self.apiRequestElligiblity();
+    } else {
+      self.apiRequestMerchant();
+    }
+
     self.setState({lastBlockTime: self.state.rand});
     const rand = Math.round(Math.random()*(self.state.callInterval))+1000;
     // clear the existing interval and set the new one.
