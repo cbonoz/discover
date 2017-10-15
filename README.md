@@ -1,6 +1,5 @@
 Discover ImmutableAPI
 ---
-<br/><hr/>
 <img src="http://emilytlam.com/ImmutableAPI.png"/>
 
 <b>Immutable API is a api extension project designed specifically to be used by Discover's partners.
