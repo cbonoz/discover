@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import ImmutableAPI from '../build/contracts/ImmutableAPI.json'
+import fetch from 'node-fetch';
 import getWeb3 from './utils/getWeb3'
 import StackGrid, { transitions, easings } from 'react-stack-grid';
 import BlockStack from './components/BlockStack'
@@ -24,7 +25,8 @@ class App extends Component {
       myInterval: null ,
       lastBlockTime: null,
       rand: null,
-      callInterval: 4000
+      callInterval: 4000,
+      companiesToValidate: ['target', 'sears', 'jcpenney', 'walmart', 'costco']
     }
   }
 
@@ -51,6 +53,10 @@ class App extends Component {
     if (self.state.myInterval != null) {
       clearInterval(self.state.myInterval);
     }
+  }
+
+  getRandom(items) {
+    return items[Math.floor(Math.random()*items.length)];
   }
 
   //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
@@ -85,14 +91,39 @@ class App extends Component {
     });
   }
 
+  hashData(data) {
+    var crypto = require('crypto');
+    return crypto.createHash('md5').update(data).digest("hex");
+  }
+
   apiRequest() {
     const self = this;
-    self.state.web3.eth.getAccounts((error, accounts) => {
-      self.state.immutableApi.deployed().then((instance) => {
-        self.setState({immutableApiInstance: instance});
-        self.recordTransaction("test api", "test data", accounts[0]);
-      })
-    });
+    // Insert fetch call to discover api here.
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    // Validate the request/response of details for a 'random' company.
+    const company = self.getRandom(self.state.companiesToValidate);
+    const queryParams = '?' +  encodeURIComponent('requestHeader.version') + '=' + encodeURIComponent('3.2')+ '&' +  encodeURIComponent('requestHeader.format') + '=' + encodeURIComponent('json')+ '&' +  encodeURIComponent('requestHeader.applicationKey') + '=' + encodeURIComponent('l7xx7741684d36644a3fb8b25e1998792176')+ '&' +  encodeURIComponent('listControl.startIndex') + '=' + encodeURIComponent('0')+ '&' +  encodeURIComponent('listControl.segmentSize') + '=' + encodeURIComponent('10')+ '&' +  encodeURIComponent('listControl.segmentWindow') + '=' + encodeURIComponent('3')+ '&' +  encodeURIComponent('searchCriteria.filterField') + '=' + encodeURIComponent('name')+ '&' +  encodeURIComponent('searchCriteria.filterValue') + '=' + encodeURIComponent(company)+ '&' +  encodeURIComponent('apikey') + '=' + encodeURIComponent('l7xx7741684d36644a3fb8b25e1998792176');
+    const baseUrl = 'https://api.discover.com';
+    const path = '/geo/remote/rest/location' + queryParams;
+    const url = baseUrl + path;
+    const fullUrl = proxyurl + url;
+
+    fetch(fullUrl)
+      .then(res => res.json())
+      .then(json => {
+        const hashedPath = self.hashData(path);
+        const hashedResponse = self.hashData(json.toString());
+        console.log('response', json, 'hash', hashedResponse);
+
+        self.state.web3.eth.getAccounts((error, accounts) => {
+          self.state.immutableApi.deployed().then((instance) => {
+            self.setState({immutableApiInstance: instance});
+            self.recordTransaction(hashedPath, hashedResponse, accounts[0]);
+          })
+        });
+      }).catch((err) => {
+        console.log('error fetching ', fullUrl ,err);
+      });
   }
 
   randomizeApiRequest() {

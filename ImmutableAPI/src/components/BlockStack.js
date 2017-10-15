@@ -57,7 +57,7 @@ export default class BlockStack extends Component {
           onClick={() => self.removeItem(item['tx'])}
         ><span className='transaction'>Transaction</span>
         <div className='blueBG'><strong>Transaction Hash:</strong> <span className='word-break'>{item['receipt']['transactionHash']}</span></div>
-        <div className='blueBG'><strong>API call:</strong> <span className='word-break'>{item['logs'][0]['args']['api']}</span></div>
+        <div className='blueBG'><strong>Hashed API call:</strong> <span className='word-break'>{item['logs'][0]['args']['api']}</span></div>
         <div className='blueBG'><strong>Hashed Response:</strong> <span className='word-break'>{item['logs'][0]['args']['data']}</span></div>
         <div className='blueBG'><strong>Time Recorded:<br/></strong> <span className='word-break'>{item['logs'][0]['args']['timestamp']['myDate']}</span></div>
         <div className='greenCheckMark'><img src={self.getTransactionImage(item['position'])}/></div></div>)
